@@ -1,0 +1,7 @@
+﻿This application is a good record of employee management.
+In this application, we introduced 5 functionalities:
+• Authentication and user registration: Creating a login system, either by email/password or with an authentication token.
+• Daily Score (Check-in and Check-out): Users can record their start and end times for the working day. This may also include recording breaks.
+• Viewing the timekeeping history: A section where users can see their work history (days, hours worked, timekeeping).
+• Reports: Tables showing total hours worked in a week or month, plus possible productivity reports.
+• Manage vacations and days off: Users can request days off or view a calendar of days already approved.
