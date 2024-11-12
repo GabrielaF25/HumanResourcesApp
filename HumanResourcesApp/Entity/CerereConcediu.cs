@@ -6,7 +6,7 @@ public class CerereConcediu
 {
 	[Key]
 	public int Id { get; set; }
-
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	[Required]
 	public DateTime DataInceput { get; set; }
 
@@ -20,5 +20,5 @@ public class CerereConcediu
 
 	// Foreign Key pentru Angajat
 	public int AngajatId { get; set; }
-	public Angajat Angajat { get; set; }
+	public Angajat? Angajat { get; set; }
 }

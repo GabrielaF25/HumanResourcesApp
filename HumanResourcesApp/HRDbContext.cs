@@ -29,5 +29,7 @@ public class HRDbContext : DbContext
 			.HasMany(a => a.Documente)
 			.WithOne(d => d.Angajat)
 			.HasForeignKey(d => d.AngajatId);
+
+		base.OnModelCreating(modelBuilder);
 	}
 }

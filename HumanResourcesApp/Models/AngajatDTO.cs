@@ -5,18 +5,16 @@ namespace HumanResourcesApp.Models
 	public class AngajatDTO
 	{
 		public int Id { get; set; }
-
-		[Required]
 		public string Nume { get; set; }
-
-		[Required]
 		public string Prenume { get; set; }
+		public string Email { get; set; }
+		public string Pozitie { get; set; }
+		public DateTime DataAngajarii { get; set; }
 
-		[EmailAddress]
-		public string Email { get; set; } = string.Empty;
-
-		public DateTime DataAngajare { get; set; }
-
-		public string Departament { get; set; } = string.Empty;
+		// Relații cu entitățile copil
+		public ICollection<CerereConcediuDTO> CereriConcediu { get; set; } = new List<CerereConcediuDTO>();
+		public ICollection<EvaluareDTO> Evaluari { get; set; } = new List<EvaluareDTO>();
+		public ICollection<DocumentDTO> Documente { get; set; } = new List<DocumentDTO>();
 	}
+
 }

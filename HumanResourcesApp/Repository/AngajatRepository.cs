@@ -22,10 +22,37 @@ public class AngajatRepository : IAngajatRepository
 		return await _context.Angajati.FindAsync(id);
 	}
 
-	public async Task AddAngajatAsync(Angajat angajat)
+	public async Task<Angajat> CreateAngajatAsync(Angajat angajat)
 	{
+		if (angajat.CereriConcediu != null)
+		{
+			foreach (var cerere in angajat.CereriConcediu)
+			{
+				_context.CereriConcediu.Add(cerere);
+			}
+		}
+
+		if (angajat.Evaluari != null)
+		{
+			foreach (var evaluare in angajat.Evaluari)
+			{
+				_context.Evaluari.Add(evaluare);
+			}
+		}
+
+		if (angajat.Documente != null)
+		{
+			foreach (var document in angajat.Documente)
+			{
+				_context.Documente.Add(document);
+			}
+		}
+
 		_context.Angajati.Add(angajat);
+		
 		await _context.SaveChangesAsync();
+		return angajat;
+
 	}
 
 	public async Task UpdateAngajatAsync(Angajat angajat)

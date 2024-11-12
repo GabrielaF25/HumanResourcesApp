@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Evaluare
 {
 	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
 	[Required]
@@ -16,5 +17,5 @@ public class Evaluare
 
 	// Foreign Key pentru Angajat
 	public int AngajatId { get; set; }
-	public Angajat Angajat { get; set; }
+	public Angajat? Angajat { get; set; }
 }

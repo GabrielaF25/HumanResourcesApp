@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Angajat
 {
 	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
 	[Required]
@@ -24,11 +26,11 @@ public class Angajat
 	public DateTime DataAngajarii { get; set; }
 
 	// Relația cu CereriConcediu
-	public ICollection<CerereConcediu> CereriConcediu { get; set; }
+	public ICollection<CerereConcediu> CereriConcediu { get; set; }=new List<CerereConcediu>();
 
 	// Relația cu Evaluari
-	public ICollection<Evaluare> Evaluari { get; set; }
+	public ICollection<Evaluare> Evaluari { get; set; } = new List<Evaluare>();
 
 	// Relația cu Documente
-	public ICollection<Document> Documente { get; set; }
+	public ICollection<Document> Documente { get; set; } = new List<Document>();
 }

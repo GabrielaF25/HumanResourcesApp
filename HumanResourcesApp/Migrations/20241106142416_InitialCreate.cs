@@ -60,7 +60,6 @@ namespace HumanResourcesApp.Migrations
                     Nume = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     TipDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataIncarcare = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CaleFisier = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AngajatId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

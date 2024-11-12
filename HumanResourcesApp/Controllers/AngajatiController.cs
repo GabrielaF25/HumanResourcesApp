@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using HumanResourcesApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,10 +10,12 @@ using System.Threading.Tasks;
 public class AngajatController : ControllerBase
 {
 	private readonly IAngajatRepository _repository;
+	private readonly IMapper _mapper;
 
-	public AngajatController(IAngajatRepository repository)
+	public AngajatController(IAngajatRepository repository,IMapper mapper)
 	{
 		_repository = repository;
+		_mapper = mapper;
 	}
 
 	// GET: api/Angajat
@@ -23,8 +27,8 @@ public class AngajatController : ControllerBase
 	}
 
 	// GET: api/Angajat/5
-	[HttpGet("{id}")]
-	public async Task<ActionResult<Angajat>> GetAngajat(int id)
+	[HttpGet("{id}", Name ="GetById")]
+	public async Task<ActionResult<AngajatDTO>> GetAngajatById(int id)
 	{
 		var angajat = await _repository.GetAngajatByIdAsync(id);
 
@@ -32,16 +36,46 @@ public class AngajatController : ControllerBase
 		{
 			return NotFound();
 		}
-
-		return Ok(angajat);
+		var angajatDto = _mapper.Map<AngajatDTO>(angajat);
+		return Ok(angajatDto);
 	}
 
 	// POST: api/Angajat
 	[HttpPost]
 	public async Task<ActionResult<Angajat>> PostAngajat(Angajat angajat)
 	{
-		await _repository.AddAngajatAsync(angajat);
-		return CreatedAtAction(nameof(GetAngajat), new { id = angajat.Id }, angajat);
+		// Validare suplimentară pentru asocierile complexe, dacă este nevoie
+
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+		//foreach (var cerere in angajat.CereriConcediu)
+		//{
+		//	cerere.AngajatId = angajat.Id;
+		//}
+
+		//foreach (var evaluare in angajat.Evaluari)
+		//{
+		//	evaluare.AngajatId = angajat.Id;
+		//}
+
+		// foreach (var document in angajat.Documente)
+		// {
+		//     document.AngajatId = angajat.Id;
+		// } var angajat = _mapper.Map<Angajat>(angajatDto);
+
+		var createdAngajat = await _repository.CreateAngajatAsync(angajat);
+
+		// Convertim înapoi la DTO pentru a returna rezultatul
+		var createdAngajatDto = _mapper.Map<AngajatDTO>(createdAngajat);
+
+		return CreatedAtAction(nameof(GetAngajatById), new { id = createdAngajatDto.Id }, createdAngajatDto);
+	
+
+	//var createdAngajat = await _repository.CreateAngajatAsync(angajat);
+
+		//return CreatedAtAction("GetById", new { id = createdAngajat.Id }, createdAngajat);
 	}
 
 	// PUT: api/Angajat/5

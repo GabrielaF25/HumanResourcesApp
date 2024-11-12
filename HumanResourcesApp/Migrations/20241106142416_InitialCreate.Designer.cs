@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HumanResourcesApp.Migrations
 {
     [DbContext(typeof(HRDbContext))]
-    [Migration("20241102195120_InitialCreate")]
+    [Migration("20241106142416_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -70,6 +70,7 @@ namespace HumanResourcesApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataInceput")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataSfarsit")
@@ -101,15 +102,12 @@ namespace HumanResourcesApp.Migrations
                     b.Property<int>("AngajatId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CaleFisier")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DataIncarcare")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nume")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
