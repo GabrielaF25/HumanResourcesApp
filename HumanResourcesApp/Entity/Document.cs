@@ -17,7 +17,7 @@ public class Document
 	public DateTime DataIncarcare { get; set; }
 
 
-	// Foreign Key pentru Angajat
+	[ForeignKey("AngajatId")]
 	public int AngajatId { get; set; }
 	public Angajat? Angajat { get; set; }
 }

@@ -10,5 +10,6 @@
 
 		// Cheia externă pentru Angajat
 		public int AngajatId { get; set; }
+		
 	}
 }

@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<HRDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Adaugă repository-ul în DI
 builder.Services.AddScoped<IAngajatRepository, AngajatRepository>();

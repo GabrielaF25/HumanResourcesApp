@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HumanResourcesApp.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,13 +15,13 @@ namespace HumanResourcesApp.Migrations
                 name: "Angajati",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nume = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Prenume = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pozitie = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataAngajarii = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nume = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Prenume = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Pozitie = table.Column<string>(type: "TEXT", nullable: false),
+                    DataAngajarii = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,13 +32,13 @@ namespace HumanResourcesApp.Migrations
                 name: "CereriConcediu",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DataInceput = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataSfarsit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Motiv = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AngajatId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DataInceput = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DataSfarsit = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Motiv = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    AngajatId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,12 +55,12 @@ namespace HumanResourcesApp.Migrations
                 name: "Documente",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nume = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TipDocument = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataIncarcare = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AngajatId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nume = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    TipDocument = table.Column<string>(type: "TEXT", nullable: false),
+                    DataIncarcare = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AngajatId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,12 +77,12 @@ namespace HumanResourcesApp.Migrations
                 name: "Evaluari",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Scor = table.Column<int>(type: "int", nullable: false),
-                    Comentariu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataEvaluare = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AngajatId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Scor = table.Column<int>(type: "INTEGER", nullable: false),
+                    Comentariu = table.Column<string>(type: "TEXT", nullable: false),
+                    DataEvaluare = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AngajatId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

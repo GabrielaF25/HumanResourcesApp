@@ -42,7 +42,7 @@ public class AngajatController : ControllerBase
 
 	// POST: api/Angajat
 	[HttpPost]
-	public async Task<ActionResult<Angajat>> PostAngajat(Angajat angajat)
+	public async Task<ActionResult<Angajat>> PostAngajat(AngajatDTO angajatdto)
 	{
 		// Validare suplimentară pentru asocierile complexe, dacă este nevoie
 
@@ -50,20 +50,21 @@ public class AngajatController : ControllerBase
 		{
 			return BadRequest(ModelState);
 		}
-		//foreach (var cerere in angajat.CereriConcediu)
-		//{
-		//	cerere.AngajatId = angajat.Id;
-		//}
+		foreach (var cerere in angajatdto.CereriConcediu)
+		{
+			cerere.AngajatId = angajatdto.Id;
+		}
 
-		//foreach (var evaluare in angajat.Evaluari)
-		//{
-		//	evaluare.AngajatId = angajat.Id;
-		//}
+		foreach (var evaluare in angajatdto.Evaluari)
+		{
+			evaluare.AngajatId = angajatdto.Id;
+		}
 
-		// foreach (var document in angajat.Documente)
-		// {
-		//     document.AngajatId = angajat.Id;
-		// } var angajat = _mapper.Map<Angajat>(angajatDto);
+		foreach (var document in angajatdto.Documente)
+		{
+			document.AngajatId = angajatdto.Id;
+		}
+		var angajat = _mapper.Map<Angajat>(angajatdto);
 
 		var createdAngajat = await _repository.CreateAngajatAsync(angajat);
 

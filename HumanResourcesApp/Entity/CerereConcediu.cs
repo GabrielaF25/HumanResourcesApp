@@ -18,7 +18,7 @@ public class CerereConcediu
 	[Required]
 	public string Status { get; set; } // "Aprobat", "Respins", "In asteptare"
 
-	// Foreign Key pentru Angajat
+	[ForeignKey("AngajatId")]
 	public int AngajatId { get; set; }
 	public Angajat? Angajat { get; set; }
 }

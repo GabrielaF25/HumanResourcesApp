@@ -15,7 +15,7 @@ public class Evaluare
 
 	public DateTime DataEvaluare { get; set; }
 
-	// Foreign Key pentru Angajat
+	[ForeignKey("AngajatId")]
 	public int AngajatId { get; set; }
 	public Angajat? Angajat { get; set; }
 }
