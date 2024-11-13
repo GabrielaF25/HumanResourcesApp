@@ -1,5 +1,10 @@
-﻿This application is a good record of employee management.
+﻿This project dealt with the management of employees within a company.
+The application has a login system in which any employee from the human resources department will have access to the application. An employee from the human resources department will have the opportunity to manage employees within a company by evaluating them, uploading the necessary documents for an employee and managing vacations.
+Any employee entity has properties: name, surname, email, position, leave requests, documents and
 In this application, we introduced 5 functionalities:
-• Authentication and user registration: Creating a login system, either by email/password or with an authentication token.
-• Manage vacations and days off: Users can request days off or view a calendar of days already approved.
+•	Authentication and user registration: Creating a login system, either by email/password or with an authentication token.
+•	Manage vacations and days off: Users can request days off or view a calendar of days already approved.
+•	The introduction of the necessary documents for each employee.
+•	Managing the evaluations of each employee
+•	Add/Delete employee.
 
