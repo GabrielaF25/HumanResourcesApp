@@ -23,7 +23,8 @@ public class AngajatController : ControllerBase
 	public async Task<ActionResult<IEnumerable<Angajat>>> GetAngajati()
 	{
 		var angajati = await _repository.GetAllAngajatiAsync();
-		return Ok(angajati);
+		var angajatidto = _mapper.Map<IEnumerable<AngajatDTO>>(angajati);
+			return Ok(angajatidto);
 	}
 
 	// GET: api/Angajat/5
@@ -45,34 +46,22 @@ public class AngajatController : ControllerBase
 	public async Task<ActionResult<Angajat>> PostAngajat(AngajatDTO angajatdto)
 	{
 		// Validare suplimentară pentru asocierile complexe, dacă este nevoie
-
 		if (!ModelState.IsValid)
 		{
 			return BadRequest(ModelState);
 		}
-		foreach (var cerere in angajatdto.CereriConcediu)
-		{
-			cerere.AngajatId = angajatdto.Id;
-		}
 
-		foreach (var evaluare in angajatdto.Evaluari)
-		{
-			evaluare.AngajatId = angajatdto.Id;
-		}
-
-		foreach (var document in angajatdto.Documente)
-		{
-			document.AngajatId = angajatdto.Id;
-		}
+		// Mapăm DTO-ul la entitatea de bază
 		var angajat = _mapper.Map<Angajat>(angajatdto);
 
+		// Creăm angajatul și entitățile copil prin repository
 		var createdAngajat = await _repository.CreateAngajatAsync(angajat);
 
 		// Convertim înapoi la DTO pentru a returna rezultatul
 		var createdAngajatDto = _mapper.Map<AngajatDTO>(createdAngajat);
 
 		return CreatedAtAction(nameof(GetAngajatById), new { id = createdAngajatDto.Id }, createdAngajatDto);
-	
+
 
 	//var createdAngajat = await _repository.CreateAngajatAsync(angajat);
 

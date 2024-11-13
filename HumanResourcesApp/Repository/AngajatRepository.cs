@@ -14,7 +14,11 @@ public class AngajatRepository : IAngajatRepository
 
 	public async Task<IEnumerable<Angajat>> GetAllAngajatiAsync()
 	{
-		return await _context.Angajati.ToListAsync();
+		return await _context.Angajati
+			.Include(a => a.CereriConcediu)   // Include CereriConcediu
+			.Include(a => a.Evaluari)          // Include Evaluari
+			.Include(a => a.Documente)         // Include Documente
+			.ToListAsync();
 	}
 
 	public async Task<Angajat> GetAngajatByIdAsync(int id)
@@ -24,34 +28,11 @@ public class AngajatRepository : IAngajatRepository
 
 	public async Task<Angajat> CreateAngajatAsync(Angajat angajat)
 	{
-		if (angajat.CereriConcediu != null)
-		{
-			foreach (var cerere in angajat.CereriConcediu)
-			{
-				_context.CereriConcediu.Add(cerere);
-			}
-		}
-
-		if (angajat.Evaluari != null)
-		{
-			foreach (var evaluare in angajat.Evaluari)
-			{
-				_context.Evaluari.Add(evaluare);
-			}
-		}
-
-		if (angajat.Documente != null)
-		{
-			foreach (var document in angajat.Documente)
-			{
-				_context.Documente.Add(document);
-			}
-		}
-
-		_context.Angajati.Add(angajat);
+			// Salvează mai întâi angajatul pentru a-i genera Id-ul
+			_context.Angajati.Add(angajat);
+			await _context.SaveChangesAsync(); // Acum angajat.Id este disponibil
+			return angajat;
 		
-		await _context.SaveChangesAsync();
-		return angajat;
 
 	}
 
