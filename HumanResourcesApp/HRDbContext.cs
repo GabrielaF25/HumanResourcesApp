@@ -18,12 +18,14 @@ public class HRDbContext : DbContext
 		modelBuilder.Entity<Angajat>()
 			.HasMany(a => a.CereriConcediu)
 			.WithOne(c => c.Angajat)
-			.HasForeignKey(c => c.AngajatId);
+			.HasForeignKey(c => c.AngajatId)
+		 .OnDelete(DeleteBehavior.Cascade);
 
 		modelBuilder.Entity<Angajat>()
 			.HasMany(a => a.Evaluari)
 			.WithOne(e => e.Angajat)
-			.HasForeignKey(e => e.AngajatId);
+			.HasForeignKey(e => e.AngajatId)
+			 .OnDelete(DeleteBehavior.Cascade);
 
 		modelBuilder.Entity<Angajat>()
 			.HasMany(a => a.Documente)

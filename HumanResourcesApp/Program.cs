@@ -1,4 +1,5 @@
 ﻿using HumanResourcesApp.Profiles;
+using HumanResourcesApp.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<HRDbContext>(options =>
 
 // Adaugă repository-ul în DI
 builder.Services.AddScoped<IAngajatRepository, AngajatRepository>();
+builder.Services.AddScoped<IEvaluareRepository, EvaluareRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
