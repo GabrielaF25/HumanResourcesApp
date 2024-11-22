@@ -70,9 +70,9 @@ public class AngajatController : ControllerBase
 
 	// PUT: api/Angajat/5
 	[HttpPut("{id}")]
-	public async Task<IActionResult> PutAngajat(int id, Angajat angajat)
+	public async Task<IActionResult> PutAngajat(int id, AngajatDTO angajatdto)
 	{
-		if (id != angajat.Id)
+		if (id != angajatdto.Id)
 		{
 			return BadRequest();
 		}
@@ -81,7 +81,7 @@ public class AngajatController : ControllerBase
 		{
 			return NotFound();
 		}
-
+		var angajat = _mapper.Map<Angajat>(angajatdto);
 		await _repository.UpdateAngajatAsync(angajat);
 		return NoContent();
 	}

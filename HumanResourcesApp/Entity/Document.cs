@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Document
 {
 	[Key]
-	public int Id { get; set; }
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int Id { get; set; }
+	
 
 	[Required]
 	[MaxLength(200)]

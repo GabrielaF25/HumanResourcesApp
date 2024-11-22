@@ -13,6 +13,8 @@ public class Evaluare
 
 	public string Comentariu { get; set; }
 
+	public string TipEvaluare { get; set; }
+
 	public DateTime DataEvaluare { get; set; }
 
 	[ForeignKey("AngajatId")]
