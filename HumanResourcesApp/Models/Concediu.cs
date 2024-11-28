@@ -7,6 +7,7 @@
 		public DateTime DataAngajarii { get; set; } // Data angajării angajatului
 
 		public List<CerereConcediu> CereriConcediu { get; set; } = new List<CerereConcediu>();
+		public List<CerereConcediuDTO> CereriConcediuDTO { get; set; } = new List<CerereConcediuDTO>();
 
 		// Proporționalitatea zilelor de concediu
 		public int ZileTotaleAnuale

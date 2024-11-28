@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using HumanResourcesApp.Models;
 using HumanResourcesApp.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HumanResourcesApp.Controllers
 {
@@ -31,17 +31,37 @@ namespace HumanResourcesApp.Controllers
 			var evaluariDTO = _mapper.Map<IEnumerable<EvaluareDTO>>(evaluari);
 			return Ok(evaluariDTO);
 		}
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateEvaluare(int id, [FromBody] EvaluareDTO evaluareDto)
+		{
+			if (id != evaluareDto.Id)
+			{
+				return BadRequest("ID-ul evaluării nu se potrivește cu cel din ruta.");
+			}
+
+			if (!await _repository.EvaluareExistsAsync(id))
+			{
+				return NotFound($"Evaluarea cu ID-ul {id} nu a fost găsită.");
+			}
+
+			var evaluare = _mapper.Map<Evaluare>(evaluareDto);
+
+			try
+			{
+				await _repository.UpdateEvaluareAsync(evaluare);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Eroare internă: {ex.Message}");
+			}
+
+			return NoContent();
+		}
 
 		[HttpPost]
 		public async Task<ActionResult<EvaluareDTO>> AddEvaluare(int idAngajat, [FromBody] EvaluareDTO evaluareDto)
 		{
-			var evaluare = new Evaluare
-			{
-				AngajatId = idAngajat,
-				Scor = evaluareDto.Scor,
-				Comentariu = evaluareDto.Comentariu,
-				DataEvaluare = evaluareDto.DataEvaluare
-			};
+			var evaluare = _mapper.Map <Evaluare>(evaluareDto);
 
 			var createdEvaluare = await _repository.AddEvaluareAsync(evaluare);
 

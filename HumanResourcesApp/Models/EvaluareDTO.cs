@@ -12,8 +12,9 @@
 		{
 			get
 			{
-				if (Scor < 50) return "Performanța este sub standarde. Se recomandă îmbunătățiri.";
+				if (Scor < 50 && Scor >0) return "Performanța este sub standarde. Se recomandă îmbunătățiri.";
 				if (Scor >= 50 && Scor < 70) return "Performanță acceptabilă, dar există loc de îmbunătățire.";
+				if (Scor == 0) return "Nu s-au facut evaluari";
 				return "Performanță satisfăcătoare.";
 			}
 		}

@@ -25,6 +25,7 @@ builder.Services.AddDbContext<HRDbContext>(options =>
 // Adaugă repository-ul în DI
 builder.Services.AddScoped<IAngajatRepository, AngajatRepository>();
 builder.Services.AddScoped<IEvaluareRepository, EvaluareRepository>();
+builder.Services.AddScoped<IConcediuRepository, ConcediuRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
