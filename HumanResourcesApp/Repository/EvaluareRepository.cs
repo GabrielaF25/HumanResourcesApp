@@ -24,10 +24,32 @@ namespace HumanResourcesApp.Repository
 			var evaluare = await _context.Evaluari.FindAsync(id);
 			if (evaluare != null)
 			{
+				// Șterge evaluarea din baza de date
 				_context.Evaluari.Remove(evaluare);
 				await _context.SaveChangesAsync();
+
+				// Resetează autoincrementul
+				using (var connection = _context.Database.GetDbConnection())
+				{
+					await connection.OpenAsync();
+
+					// Găsește valoarea maximă a ID-ului curent în tabel
+					var getMaxIdCommand = connection.CreateCommand();
+					getMaxIdCommand.CommandText = "SELECT IFNULL(MAX(Id), 0) FROM Evaluari";
+					var maxId = Convert.ToInt32(await getMaxIdCommand.ExecuteScalarAsync()); // Conversie sigură
+
+					// Actualizează secvența în sqlite_sequence
+					var resetCommand = connection.CreateCommand();
+					resetCommand.CommandText = $"UPDATE sqlite_sequence SET seq = {maxId} WHERE name = 'Evaluari'";
+					await resetCommand.ExecuteNonQueryAsync();
+				}
+			}
+			else
+			{
+				throw new KeyNotFoundException($"Evaluarea cu ID-ul {id} nu a fost găsită.");
 			}
 		}
+
 
 		public async Task<bool> EvaluareExistsAsync(int id)
 		{

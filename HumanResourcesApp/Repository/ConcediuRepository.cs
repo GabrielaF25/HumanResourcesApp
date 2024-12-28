@@ -31,9 +31,28 @@ namespace HumanResourcesApp.Repository
 				throw new KeyNotFoundException($"Cererea de concediu cu ID-ul {cerereId} nu a fost găsită.");
 			}
 
+			// Șterge cererea din baza de date
 			_context.CereriConcediu.Remove(cerere);
 			await _context.SaveChangesAsync();
+
+			// Resetează autoincrementul
+			using (var connection = _context.Database.GetDbConnection())
+			{
+				await connection.OpenAsync();
+
+				// Găsește valoarea maximă a ID-ului curent în tabel
+				var getMaxIdCommand = connection.CreateCommand();
+				getMaxIdCommand.CommandText = "SELECT IFNULL(MAX(Id), 0) FROM CereriConcediu";
+				var maxId = Convert.ToInt32(await getMaxIdCommand.ExecuteScalarAsync()); // Conversie sigură
+
+				// Actualizează secvența în sqlite_sequence
+				var resetCommand = connection.CreateCommand();
+				resetCommand.CommandText = $"UPDATE sqlite_sequence SET seq = {maxId} WHERE name = 'CereriConcediu'";
+				await resetCommand.ExecuteNonQueryAsync();
+			}
 		}
+
+
 
 		public async Task<IEnumerable<CerereConcediu>> GetCereriAprobateAsync(int angajatId)
 		{

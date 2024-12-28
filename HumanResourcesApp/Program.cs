@@ -1,4 +1,5 @@
-﻿using HumanResourcesApp.Profiles;
+﻿
+using HumanResourcesApp.Profiles;
 using HumanResourcesApp.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,6 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

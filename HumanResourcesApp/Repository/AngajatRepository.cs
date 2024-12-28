@@ -109,10 +109,43 @@ public class AngajatRepository : IAngajatRepository
 		var angajat = await _context.Angajati.FindAsync(id);
 		if (angajat != null)
 		{
+			// Șterge angajatul din baza de date
 			_context.Angajati.Remove(angajat);
 			await _context.SaveChangesAsync();
+
+			// Resetează autoincrementul
+			using (var connection = _context.Database.GetDbConnection())
+			{
+				await connection.OpenAsync();
+
+				try
+				{
+					// Găsește valoarea maximă a ID-ului curent în tabel
+					var getMaxIdCommand = connection.CreateCommand();
+					getMaxIdCommand.CommandText = "SELECT IFNULL(MAX(Id), 0) FROM Angajati";
+					var maxId = Convert.ToInt32(await getMaxIdCommand.ExecuteScalarAsync()); // Conversie sigură
+
+					// Actualizează secvența în sqlite_sequence
+					var resetCommand = connection.CreateCommand();
+					resetCommand.CommandText = $"UPDATE sqlite_sequence SET seq = {maxId} WHERE name = 'Angajati'";
+					await resetCommand.ExecuteNonQueryAsync();
+				}
+				catch (Exception ex)
+				{
+					// Opțional: loghează eroarea pentru debugging
+					Console.WriteLine($"Eroare la resetarea secvenței: {ex.Message}");
+					throw;
+				}
+			}
+		}
+		else
+		{
+			throw new KeyNotFoundException($"Angajatul cu ID-ul {id} nu a fost găsit.");
 		}
 	}
+
+
+
 
 	public async Task<bool> AngajatExistsAsync(int id)
 	{
