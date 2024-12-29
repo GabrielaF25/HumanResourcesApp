@@ -108,5 +108,11 @@ namespace HumanResourcesApp.Repository
 			_context.Entry(existingCerere).CurrentValues.SetValues(cerereConcediu);
 			await _context.SaveChangesAsync();
 		}
+		public async Task<IEnumerable<CerereConcediu>> GetToateCereriAprobateAsync()
+		{
+			return await _context.CereriConcediu
+							 .Where(c => c.Status == "Aprobat") // Filtrează doar cererile aprobate
+							 .ToListAsync();
+		}
 	}
 }

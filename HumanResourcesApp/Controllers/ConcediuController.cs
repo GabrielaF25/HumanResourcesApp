@@ -144,5 +144,15 @@ namespace HumanResourcesApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+		[HttpGet("count")]
+		public async Task<IActionResult> GetEvaluariCount()
+		{
+			var evaluari = await _concediurepository.GetToateCereriAprobateAsync();
+			var count = evaluari.Count();
+
+			return Ok(count);
+		}
+
+
 	}
 }

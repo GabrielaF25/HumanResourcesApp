@@ -2,6 +2,7 @@
 using AutoMapper;
 using HumanResourcesApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,7 +41,14 @@ public class AngajatController : ControllerBase
 		var angajatDto = _mapper.Map<AngajatDTO>(angajat);
 		return Ok(angajatDto);
 	}
+	[HttpGet("count")]
+	public async Task<IActionResult> GetEmployeeCount()
+	{
+		var angajati = await _repository.GetAllAngajatiAsync();
+		var count=angajati.Count();
 
+		return Ok(count);
+	}
 	// POST: api/Angajat
 	[HttpPost]
 	public async Task<ActionResult<Angajat>> PostAngajat(AngajatDTO angajatdto)

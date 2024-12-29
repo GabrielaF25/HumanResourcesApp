@@ -17,6 +17,7 @@ namespace HumanResourcesApp.Repository
 		Task<int> GetZileRamaseAsync(int angajatId);
 
 		Task<IEnumerable<CerereConcediu>> GetCereriAprobateAsync(int angajatId);
+		Task<IEnumerable<CerereConcediu>> GetToateCereriAprobateAsync();
 
 		Task<CerereConcediu> AddCerereConcediuAsync(int angajatId, CerereConcediu cerereConcediu);
 

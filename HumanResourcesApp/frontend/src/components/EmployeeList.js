@@ -1,6 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { getEmployees, deleteEmployee } from '../api';
-import '../css/EmployeeList.css';
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeList = () => {
