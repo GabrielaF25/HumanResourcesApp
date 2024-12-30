@@ -8,6 +8,7 @@ import Home from './components/Home';
 import EmployeeList from './components/EmployeeList';
 import AddEmployeeForm from './components/AddEmployeeForm';
 import FindEmployee from './components/FindEmployee';
+import EditEmployee from './components/EditEmployee';
 
 // Layout-ul general
 const Layout = () => (
@@ -39,6 +40,8 @@ const App = () => {
                     <Route path="employees" element={<EmployeeList />} />
                     <Route path="add-employee" element={<AddEmployeeForm />} />
                     <Route path="find-employee" element={<FindEmployee />} />
+                    <Route path="/edit-employee/:id" element={<EditEmployee />} />
+
                 </Route>
             </Routes>
         </Router>

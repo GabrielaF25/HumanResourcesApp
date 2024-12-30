@@ -7,9 +7,17 @@ const apiClient = axios.create({
     },
 });
 export const getEmployees = () => apiClient.get('/Angajat');
-export const getEmployeeById = (id) => apiClient.get(`/Angajat/${id}`);
+export const getEmployeeById = async (id) => {
+    try {
+        const response = await apiClient.get(`/Angajat/${id}`);
+        return response.data; // API-ul trebuie să returneze un obiect JSON valid
+    } catch (error) {
+        console.error('Eroare la obținerea angajatului:', error);
+        throw error;
+    }
+};
+
 export const addEmployee = (data) => apiClient.post('/Angajat', data);
-export const updateEmployee = (id, data) => apiClient.put(`/Angajat/${id}`, data);
 export const deleteEmployee = (id) => apiClient.delete(`/Angajat/${id}`);
 export const getEmployeeCount = async () => {
     try {
@@ -22,10 +30,21 @@ export const getEmployeeCount = async () => {
 };
 export const getLeaveRequestsCount = async () => {
     try {
-        const response = await apiClient.get('/Concediu/count');
+        const response = await apiClient.get('/1/concediu/count');
         return response.data;
     } catch (error) {
         console.error('Eroare la obținerea numărului de cereri de concediu:', error);
         throw error;
     }
 };
+export const getEvaluationCounts = async () => {
+    try {
+        const response = await apiClient.get('/1/Evaluare/aprobate');
+        return response.data;
+    }
+    catch (error) {
+        console.error('Eroare la obținerea numărului de cereri de concediu:', error);
+        throw error;
+    }
+}
+export const updateEmployee = (id, data) => apiClient.put(`/Angajat/${id}`, data);

@@ -1,49 +1,69 @@
 ﻿import React, { useState } from 'react';
-import { getEmployeeById } from '../api';
+import { getEmployeeById } from '../api'; // Funcția pentru apel API
+import { Link } from 'react-router-dom'; // Pentru a crea linkul către pagina de editare
 
 const FindEmployee = () => {
-    const [id, setId] = useState('');
+    const [employeeId, setEmployeeId] = useState('');
     const [employee, setEmployee] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleSearch = () => {
-        getEmployeeById(id)
-            .then((response) => {
-                setEmployee(response.data);
-                setError('');
-            })
-            .catch((error) => {
-                console.error('Eroare la căutarea angajatului:', error);
-                setError('Angajatul nu a fost găsit!');
-                setEmployee(null);
-            });
+    const handleSearch = async () => {
+        setIsLoading(true);
+        setError('');
+        setEmployee(null);
+        try {
+            const foundEmployee = await getEmployeeById(employeeId);
+            console.log('Employee found:', foundEmployee); // DEBUG
+            setEmployee(foundEmployee);
+        } catch (err) {
+            console.error('Error:', err); // DEBUG
+            setError('Angajatul nu a fost găsit sau a apărut o eroare.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
+
     return (
-        <div className="container mt-4">
-            <h1>Caută Angajat după ID</h1>
-            <div className="mb-3">
-                <label className="form-label">Introduceți ID-ul:</label>
+        <div style={{ padding: '20px' }}>
+            <h1>Caută Angajat</h1>
+            <div style={{ marginBottom: '20px' }}>
                 <input
-                    type="number"
-                    className="form-control"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
+                    type="text"
+                    placeholder="Introduceți ID-ul angajatului"
+                    value={employeeId}
+                    onChange={(e) => setEmployeeId(e.target.value)}
+                    style={{ padding: '10px', marginRight: '10px' }}
                 />
+                <button onClick={handleSearch} style={{ padding: '10px 20px' }}>
+                    Caută
+                </button>
             </div>
-            <button className="btn btn-primary" onClick={handleSearch}>
-                Caută
-            </button>
-            {error && <p className="text-danger mt-3">{error}</p>}
+            {isLoading && <p>Se încarcă...</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             {employee && (
-                <div className="mt-4">
-                    <h3>Detalii Angajat:</h3>
+                <div>
+                    <h2>Detalii Angajat</h2>
                     <p><strong>ID:</strong> {employee.id}</p>
                     <p><strong>Nume:</strong> {employee.nume}</p>
                     <p><strong>Prenume:</strong> {employee.prenume}</p>
                     <p><strong>Email:</strong> {employee.email}</p>
-                    <p><strong>Pozitie:</strong> {employee.pozitie}</p>
-                    <p><strong>Data Angajării:</strong> {new Date(employee.dataAngajarii).toLocaleDateString()}</p>
+                    {/* Alte detalii despre angajat */}
+                    <Link
+                        to={`/edit-employee/${employee.id}`}
+                        style={{
+                            display: 'inline-block',
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            textDecoration: 'none',
+                            borderRadius: '5px',
+                        }}
+                    >
+                        Modifică Angajat
+                    </Link>
                 </div>
             )}
         </div>

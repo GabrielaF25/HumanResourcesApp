@@ -11,6 +11,8 @@ const Sidebar = () => (
                     <li><a href="/">Homepage</a></li>
                     <li><a href="/employees">Lista Angajați</a></li>
                     <li><a href="/add-employee">Adaugă Angajat</a></li>
+                    <li><a href="/find-employee">Cauta Angajat</a></li>
+                  
                 </ul>
             </nav>
         </div>

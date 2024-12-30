@@ -6,22 +6,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HumanResourcesApp.Controllers
 {
-	[Route("api/angajat/{idAngajat}/[controller]")]
+	[Route("api/{idAngajat}/[controller]")]
 	[ApiController]
 	public class EvaluareController : ControllerBase
 	{
 		private readonly IMapper _mapper;
 		private readonly IEvaluareRepository _repository;
+		private readonly IAngajatRepository _angajatRepository;
 
-		public EvaluareController(IEvaluareRepository repository, IMapper mapper)
+		public EvaluareController(IAngajatRepository angajatRepository, IEvaluareRepository repository, IMapper mapper)
 		{
 			_repository = repository;
+			_angajatRepository = angajatRepository;
 			_mapper = mapper;
 		}
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<EvaluareDTO>>> GetEvaluari(int idAngajat)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(idAngajat);
+			if (angajat == null) return NotFound();
 			var evaluari = await _repository.GetEvaluariByAngajatIdAsync(idAngajat);
 			if (!evaluari.Any())
 			{
@@ -34,6 +38,7 @@ namespace HumanResourcesApp.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> UpdateEvaluare(int id, [FromBody] EvaluareDTO evaluareDto)
 		{
+
 			if (id != evaluareDto.Id)
 			{
 				return BadRequest("ID-ul evaluării nu se potrivește cu cel din ruta.");
@@ -61,6 +66,8 @@ namespace HumanResourcesApp.Controllers
 		[HttpPost]
 		public async Task<ActionResult<EvaluareDTO>> AddEvaluare(int idAngajat, [FromBody] EvaluareDTO evaluareDto)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(idAngajat);
+			if (angajat == null) return NotFound();
 			var evaluare = _mapper.Map <Evaluare>(evaluareDto);
 
 			var createdEvaluare = await _repository.AddEvaluareAsync(evaluare);
@@ -80,5 +87,13 @@ namespace HumanResourcesApp.Controllers
 			return NoContent();
 
 		}
+		[HttpGet("aprobate")]
+		public async Task<IActionResult> GetCereriAprobate()
+		{
+			var cereriAprobate = await _repository.GetAllEvaluariAsync();
+			var count= cereriAprobate.Count();
+			return Ok(count);
+		}
+
 	}
 }

@@ -1,25 +1,42 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { getEmployeeCount } from '../api'; // Funcția care face apelul API
+import { getEmployeeCount, getLeaveRequestsCount, getEvaluationCounts } from '../api'; // Funcția care face apelul API
 
 const Home = () => {
     const [employeeCount, setEmployeeCount] = useState(0); // Stocăm numărul angajaților
     const [isLoading, setIsLoading] = useState(true); // Pentru a afișa un mesaj de încărcare
+    const [leaveRequestsCount, setLeaveRequestsCount] = useState(0);
+    const [evaluationsCount, setEvaluationCounts] = useState(0);
     useEffect(() => {
-        // Apel API pentru a obține numărul de angajați
-        const fetchEmployeeCount = async () => {
+        // Funcție pentru a obține toate datele necesare
+        const fetchData = async () => {
             try {
-                const count = await getEmployeeCount();
-                console.log('Număr angajați primit:', count); // DEBUG
-                setEmployeeCount(count);
-                setIsLoading(false);
+                // Rulăm toate apelurile API în paralel
+                const [employeeCount, leaveRequestsCount, evaluationCounts] = await Promise.all([
+                    getEmployeeCount(),
+                    getLeaveRequestsCount(),
+                    getEvaluationCounts()
+                ]);
+
+                // Setăm stările pentru fiecare rezultat
+                console.log('Număr angajați primit:', employeeCount); // DEBUG
+                setEmployeeCount(employeeCount);
+
+                console.log('Număr concedii aprobate:', leaveRequestsCount); // DEBUG
+                setLeaveRequestsCount(leaveRequestsCount);
+
+                console.log('Număr evaluări:', evaluationCounts); // DEBUG
+                setEvaluationCounts(evaluationCounts);
             } catch (error) {
-                console.error('Eroare la încărcarea numărului de angajați:', error);
+                console.error('Eroare la încărcarea datelor:', error);
+            } finally {
+                // Setăm încărcarea ca finalizată
                 setIsLoading(false);
             }
         };
 
-        fetchEmployeeCount();
+        fetchData();
     }, []); // Se execută o singură dată la montarea componentei
+
     return (
 
         <section id="home" style={{ padding: '20px' }}>
@@ -49,11 +66,11 @@ const Home = () => {
                         <p>Angajați înregistrați</p>
                     </div>
                     <div className="stat-item" style={statItemStyle}>
-                        <h3>45</h3>
+                        <h3>{isLoading ? 'Se încarcă...' : leaveRequestsCount}</h3>
                         <p>Cereri de concediu procesate</p>
                     </div>
                     <div className="stat-item" style={statItemStyle}>
-                        <h3>30</h3>
+                        <h3>{isLoading ? 'Se încarcă...' : evaluationsCount}</h3>
                         <p>Evaluări finalizate</p>
                     </div>
                 </div>
@@ -69,16 +86,6 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* Secțiunea cu CTA */}
-            <div className="cta" style={{ marginTop: '40px', textAlign: 'center' }}>
-                <button
-                    className="btn btn-primary"
-                    style={ctaButtonStyle}
-                    onClick={() => window.location.href = '/add-employee'}
-                >
-                    Adaugă primul angajat
-                </button>
-            </div>
 
             {/* Secțiunea cu testimoniale */}
             <div className="testimonials" style={testimonialStyle}>

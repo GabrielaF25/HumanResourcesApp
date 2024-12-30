@@ -12,11 +12,13 @@ namespace HumanResourcesApp.Controllers
 	public class ConcediuController : ControllerBase
 	{
 		private readonly IConcediuRepository _concediurepository;
+		private readonly IAngajatRepository _angajatRepository;
 		private readonly IMapper _mapper;
 
-		public ConcediuController(IConcediuRepository concediurepository, IMapper mapper)
+		public ConcediuController(IConcediuRepository concediurepository, IMapper mapper, IAngajatRepository angajatRepository)
 		{
 			_concediurepository = concediurepository;
+			_angajatRepository = angajatRepository;
 			_mapper = mapper;
 		}
 
@@ -24,6 +26,8 @@ namespace HumanResourcesApp.Controllers
 		[HttpGet]
 		public async Task<ActionResult<Concediu>> GetConcediuForAngajat(int angajatId)
 		{
+			var angajat=_angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
 			var concediu = await _concediurepository.GetConcediuForAngajatAsync(angajatId);
 			if (concediu == null)
 			{
@@ -45,12 +49,16 @@ namespace HumanResourcesApp.Controllers
 		[HttpGet("zile-ramase")]
 		public async Task<ActionResult<int>> GetZileRamase(int angajatId)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
 			var zileRamase = await _concediurepository.GetZileRamaseAsync(angajatId);
 			return Ok(zileRamase);
 		}
 		[HttpGet("zile-consumate")]
 		public async Task<ActionResult<int>> GetZileConsumate(int angajatId)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
 			try
 			{
 				var zileConsumate = await _concediurepository.GetZileConsumateAsync(angajatId);
@@ -69,6 +77,8 @@ namespace HumanResourcesApp.Controllers
 		[HttpGet("zile-totale")]
 		public async Task<ActionResult<int>> GetZileTotale(int angajatId)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
 			try
 			{
 				var zileTotale = await _concediurepository.GetZileTotaleAnualeAsync(angajatId);
@@ -85,8 +95,11 @@ namespace HumanResourcesApp.Controllers
 		}
 		// POST: api/concediu/{angajatId}/adaugare
 		[HttpPost]
-		public async Task<ActionResult<CerereConcediu>> AddCerereConcediu(int angajatId, [FromBody] CerereConcediu cerereConcediu)
+		public async Task<ActionResult<CerereConcediu>> AddCerereConcediu(int angajatId, [FromBody] CerereConcediuDTO cerereConcediudto)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
+			var cerereConcediu = _mapper.Map<CerereConcediu>(cerereConcediudto);
 			try
 			{
 				var addedCerere = await _concediurepository.AddCerereConcediuAsync(angajatId, cerereConcediu);
@@ -104,8 +117,11 @@ namespace HumanResourcesApp.Controllers
 
 		// PUT: api/concediu/{angajatId}/modificare/{cerereId}
 		[HttpPut("{cerereId}")]
-		public async Task<IActionResult> UpdateCerereConcediu(int angajatId, int cerereId, [FromBody] CerereConcediu cerereConcediu)
+		public async Task<IActionResult> UpdateCerereConcediu(int angajatId, int cerereId, [FromBody] CerereConcediuDTO cerereConcediudto)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
+			var cerereConcediu = _mapper.Map<CerereConcediu>(cerereConcediudto);
 			if (cerereId != cerereConcediu.Id)
 			{
 				return BadRequest("ID-ul cererii din ruta nu se potrivește cu ID-ul cererii din corp.");
@@ -130,6 +146,8 @@ namespace HumanResourcesApp.Controllers
 		[HttpDelete("{cerereId}")]
 		public async Task<IActionResult> DeleteCerereConcediu(int angajatId, int cerereId)
 		{
+			var angajat = _angajatRepository.AngajatExistsAsync(angajatId);
+			if (angajat == null) return NotFound();
 			try
 			{
 				await _concediurepository.DeleteCerereConcediuAsync(cerereId);
@@ -145,10 +163,10 @@ namespace HumanResourcesApp.Controllers
 			}
 		}
 		[HttpGet("count")]
-		public async Task<IActionResult> GetEvaluariCount()
+		public async Task<IActionResult> GetCereriCount()
 		{
-			var evaluari = await _concediurepository.GetToateCereriAprobateAsync();
-			var count = evaluari.Count();
+			var cereri = await _concediurepository.GetToateCereriAprobateAsync();
+			var count = cereri.Count();
 
 			return Ok(count);
 		}
