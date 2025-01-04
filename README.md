@@ -1,0 +1,1 @@
+Pentru a accesas interfata, intrati pe Package Manager Console in proiect in VISUAL STUDIO si acolo accesati  cd calea voastra unde se afla proiectul  si in continuare tastati \frontend apoi PM> npm start. Ca in urmatorul exemplu cd C:\Users\formg\Desktop\Projects\HumanResourcesApp\HumanResourcesApp\frontend dupa care npm start 
