@@ -12,7 +12,8 @@ const Sidebar = () => (
                     <li><a href="/employees">Lista Angajați</a></li>
                     <li><a href="/add-employee">Adaugă Angajat</a></li>
                     <li><a href="/find-employee">Cauta Angajat</a></li>
-                  
+                    <li><a href="/leave-overview">Situatie Concedii Angajat</a></li>   
+                    <li><a href="/evaluation-overview">Situatie Evaluari Angajat</a></li>  
                 </ul>
             </nav>
         </div>

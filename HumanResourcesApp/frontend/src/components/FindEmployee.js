@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { getEmployeeById } from '../api'; // Funcția pentru apel API
 import { Link } from 'react-router-dom'; // Pentru a crea linkul către pagina de editare
+import LeaveDetails from './LeaveDetails';
 
 const FindEmployee = () => {
     const [employeeId, setEmployeeId] = useState('');
@@ -49,7 +50,7 @@ const FindEmployee = () => {
                     <p><strong>Nume:</strong> {employee.nume}</p>
                     <p><strong>Prenume:</strong> {employee.prenume}</p>
                     <p><strong>Email:</strong> {employee.email}</p>
-                    {/* Alte detalii despre angajat */}
+                     {/* Alte detalii despre angajat */}
                     <Link
                         to={`/edit-employee/${employee.id}`}
                         style={{
@@ -63,6 +64,18 @@ const FindEmployee = () => {
                         }}
                     >
                         Modifică Angajat
+                    </Link>
+                    <Link to={`/leave-details/${employee.id}`}
+                        style={{
+                            display: 'inline-block',
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            textDecoration: 'none',
+                            borderRadius: '5px',
+                        }}>
+                        Vezi Concedii
                     </Link>
                 </div>
             )}
