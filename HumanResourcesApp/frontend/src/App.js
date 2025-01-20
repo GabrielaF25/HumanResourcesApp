@@ -1,5 +1,5 @@
-﻿import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'; // Asigură-te că importi `Outlet`
+﻿import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom'; // Importăm `Navigate`
 import Header from './components/Header';
 import Banner from './components/Banner';
 import Sidebar from './components/Sidebar';
@@ -13,16 +13,17 @@ import LeaveDetails from './components/LeaveDetails';
 import EditLeaveRequest from './components/EditLeaveRequest';
 import LeaveOverview from './components/LeaveOverview';
 import EvaluationOverview from './components/EvaluationOverview';
+import Login from './components/Login'; // Adăugăm componenta de logare
+
 // Layout-ul general
-const Layout = () => (
+const Layout = ({ onLogout }) => (
     <div id="wrapper">
-        <Sidebar />
+        <Sidebar onLogout={onLogout} /> {/* Transmitem funcția de logout către Sidebar */}
         <div id="main">
             <div className="inner">
                 <Header />
                 <Banner />
                 <div>
-                    {/* Aici vor fi redat conținutul specific fiecărei rute */}
                     <Outlet />
                 </div>
             </div>
@@ -31,13 +32,40 @@ const Layout = () => (
     </div>
 );
 
+// Componentă pentru rute protejate
+const ProtectedRoute = ({ children }) => {
+    const token = localStorage.getItem('token'); // Verificăm token-ul din localStorage
+    return token ? children : <Navigate to="/login" />;
+};
+
 const App = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Verificăm dacă există un token la încărcare
+
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        window.location.href = '/login'; // Redirecționare după logout
+    };
+
     return (
         <Router>
             <Routes>
+                {/* Ruta pentru logare */}
+                <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
                 {/* Layout general */}
-                <Route path="/" element={<Layout />}>
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Layout onLogout={handleLogout} />
+                        </ProtectedRoute>
+                    }
+                >
                     {/* Rute în cadrul layout-ului */}
                     <Route index element={<Home />} /> {/* Ruta principală */}
                     <Route path="employees" element={<EmployeeList />} />
@@ -48,8 +76,6 @@ const App = () => {
                     <Route path="/edit-leave/:angajatId/:requestId" element={<EditLeaveRequest />} />
                     <Route path="/leave-overview" element={<LeaveOverview />} />
                     <Route path="/evaluation-overview" element={<EvaluationOverview />} />
-
-
                 </Route>
             </Routes>
         </Router>
