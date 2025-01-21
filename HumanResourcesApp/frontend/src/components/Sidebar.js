@@ -14,6 +14,8 @@ const Sidebar = ({ onLogout }) => (
                     <li><a href="/find-employee">Caută Angajat</a></li>
                     <li><a href="/leave-overview">Situație Concedii Angajat</a></li>
                     <li><a href="/evaluation-overview">Situație Evaluări Angajat</a></li>
+                    <li><a href="/documents">Lista Documente</a></li> 
+                    <li><a href="/add-document">Adaugă Document</a></li> 
                 </ul>
             </nav>
             <footer>

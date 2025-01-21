@@ -24,6 +24,7 @@ builder.Services.AddDbContext<HRDbContext>(options =>
 
 // Add repositories to Dependency Injection
 builder.Services.AddScoped<IAngajatRepository, AngajatRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 builder.Services.AddScoped<IEvaluareRepository, EvaluareRepository>();
 builder.Services.AddScoped<IConcediuRepository, ConcediuRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

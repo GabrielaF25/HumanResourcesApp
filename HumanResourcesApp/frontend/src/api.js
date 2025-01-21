@@ -6,11 +6,13 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+// Employee API calls
 export const getEmployees = () => apiClient.get(`/Angajat`);
 export const getEmployeeById = async (id) => {
     try {
         const response = await apiClient.get(`/Angajat/${id}`);
-        return response.data; // API-ul trebuie să returneze un obiect JSON valid
+        return response.data; // Return the employee data
     } catch (error) {
         console.error('Eroare la obținerea angajatului:', error);
         throw error;
@@ -22,35 +24,27 @@ export const deleteEmployee = (id) => apiClient.delete(`/Angajat/${id}`);
 export const getEmployeeCount = async () => {
     try {
         const response = await apiClient.get('/Angajat/count');
-        return response.data;
+        return response.data; // Return employee count
     } catch (error) {
         console.error('Eroare la obținerea numărului de angajați:', error);
         throw error;
     }
 };
+
+// Leave API calls
 export const getLeaveRequestsCount = async () => {
     try {
         const response = await apiClient.get(`/1/concediu/count`);
-        return response.data;
+        return response.data; // Return leave requests count
     } catch (error) {
         console.error('Eroare la obținerea numărului de cereri de concediu:', error);
         throw error;
     }
 };
-export const getEvaluationCounts = async () => {
-    try {
-        const response = await apiClient.get(`/1/Evaluare/aprobate`);
-        return response.data;
-    }
-    catch (error) {
-        console.error('Eroare la obținerea numărului de cereri de concediu:', error);
-        throw error;
-    }
-}
 export const getConcediuForAngajat = async (angajatId) => {
     try {
         const response = await apiClient.get(`/${angajatId}/concediu`);
-        return response.data;
+        return response.data; // Return leave data for employee
     } catch (error) {
         console.error('Eroare la obținerea concediilor:', error);
         throw error;
@@ -59,82 +53,90 @@ export const getConcediuForAngajat = async (angajatId) => {
 export const getZileRamase = async (angajatId) => {
     try {
         const response = await apiClient.get(`/${angajatId}/concediu/zile-ramase`);
-        return response.data;
+        return response.data; // Return remaining days
     } catch (error) {
         console.error('Eroare la obținerea zilelor rămase:', error);
         throw error;
     }
 };
 
-// Obține numărul de zile consumate pentru un angajat
-export const getZileConsumate = async (angajatId) => {
+// Document API calls
+
+// Get all documents
+export const getDocuments = async () => {
     try {
-        const response = await apiClient.get(`/${angajatId}/concediu/zile-consumate`);
-        return response.data;
+        const response = await apiClient.get(`/Document`);
+        return response.data; // Returns the list of documents
     } catch (error) {
-        console.error('Eroare la obținerea zilelor consumate:', error);
-        throw error;
+        console.error('Error getting documents:', error);
+        throw error; // Re-throw the error for handling in the component
     }
 };
 
-// Obține numărul total de zile disponibile pentru un angajat
-export const getZileTotale = async (angajatId) => {
+// Get a document by ID
+export const getDocumentById = async (id) => {
     try {
-        const response = await apiClient.get(`/${angajatId}/concediu/zile-totale`);
-        return response.data;
+        const response = await apiClient.get(`/Document/${id}`);
+        return response.data; // Returns the document details
     } catch (error) {
-        console.error('Eroare la obținerea zilelor totale:', error);
-        throw error;
+        console.error('Error getting document by ID:', error);
+        throw error; // Re-throw the error for handling in the component
     }
 };
-export const addLeaveRequest = async (angajatId, leaveRequest) => {
+
+// Add a new document
+export const addDocument = async (documentData) => {
     try {
-        const response = await apiClient.post(`${angajatId}/concediu`, leaveRequest);
-        return response.data;
+        const response = await apiClient.post(`/Document`, documentData);
+        return response.data; // Returns the newly created document
     } catch (error) {
-        console.error('Eroare la adaugarea cererii de concediu:', error);
-        throw error;
+        console.error('Error adding document:', error);
+        throw error; // Re-throw the error for handling in the component
     }
 };
-export const updateLeaveRequest = async (angajatId, cerereId, leaveRequest) => {
+
+// Update an existing document
+export const updateDocument = async (id, documentData) => {
     try {
-        await apiClient.put(`/${angajatId}/concediu/${cerereId}`, leaveRequest);
+        const response = await apiClient.put(`/Document/${id}`, documentData);
+        return response.data; // Returns the updated document
     } catch (error) {
-        console.error('Eroare la actualizarea cererii de concediu:', error);
-        throw error;
+        console.error('Error updating document:', error);
+        throw error; // Re-throw the error for handling in the component
     }
 };
-export const deleteLeaveRequest = async (angajatId, cerereId) => {
+
+// Delete a document by ID
+export const deleteDocument = async (id) => {
     try {
-        await apiClient.delete(`/${angajatId}/concediu/${cerereId}`);
+        await apiClient.delete(`/Document/${id}`);
     } catch (error) {
-        console.error('Eroare la ștergerea cererii de concediu:', error);
-        throw error;
+        console.error('Error deleting document:', error);
+        throw error; // Re-throw the error for handling in the component
     }
-}
-// Obține evaluările unui angajat
+};
+
+// Evaluation API calls
 export const getEvaluariByAngajatId = async (idAngajat) => {
     try {
         const response = await apiClient.get(`/${idAngajat}/evaluare`);
-        return response.data;
+        return response.data; // Returns the evaluations for an employee
     } catch (error) {
         console.error('Eroare la obținerea evaluărilor:', error);
         throw error;
     }
 };
 
-// Adaugă o evaluare
 export const addEvaluare = async (idAngajat, evaluareData) => {
     try {
         const response = await apiClient.post(`/${idAngajat}/evaluare`, evaluareData);
-        return response.data;
+        return response.data; // Returns the created evaluation
     } catch (error) {
         console.error('Eroare la adăugarea evaluării:', error);
         throw error;
     }
 };
 
-// Modifică o evaluare
 export const updateEvaluare = async (id, evaluareData) => {
     try {
         await apiClient.put(`/evaluare/${id}`, evaluareData);
@@ -144,7 +146,6 @@ export const updateEvaluare = async (id, evaluareData) => {
     }
 };
 
-// Șterge o evaluare
 export const deleteEvaluare = async (id) => {
     try {
         await apiClient.delete(`/evaluare/${id}`);
@@ -153,4 +154,3 @@ export const deleteEvaluare = async (id) => {
         throw error;
     }
 };
-

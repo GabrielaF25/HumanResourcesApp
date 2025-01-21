@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom'; // Importăm `Navigate`
+import { BrowserRouter as Router, Route, Routes, Outlet, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Banner from './components/Banner';
 import Sidebar from './components/Sidebar';
@@ -13,12 +13,15 @@ import LeaveDetails from './components/LeaveDetails';
 import EditLeaveRequest from './components/EditLeaveRequest';
 import LeaveOverview from './components/LeaveOverview';
 import EvaluationOverview from './components/EvaluationOverview';
-import Login from './components/Login'; // Adăugăm componenta de logare
+import Login from './components/Login';
+import DocumentList from './components/DocumentList';
+import DocumentForm from './components/DocumentForm';
+import DocumentDetails from './components/DocumentDetails';
 
 // Layout-ul general
 const Layout = ({ onLogout }) => (
     <div id="wrapper">
-        <Sidebar onLogout={onLogout} /> {/* Transmitem funcția de logout către Sidebar */}
+        <Sidebar onLogout={onLogout} />
         <div id="main">
             <div className="inner">
                 <Header />
@@ -39,7 +42,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token')); // Verificăm dacă există un token la încărcare
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
     const handleLogin = () => {
         setIsLoggedIn(true);
@@ -53,11 +56,8 @@ const App = () => {
 
     return (
         <Router>
-            <Routes>
-                {/* Ruta pentru logare */}
-                <Route path="/login" element={<Login onLogin={handleLogin} />} />
-
-                {/* Layout general */}
+            <Routes>              
+                <Route path="/login" element={<Login onLogin={handleLogin} />} />           
                 <Route
                     path="/"
                     element={
@@ -65,9 +65,8 @@ const App = () => {
                             <Layout onLogout={handleLogout} />
                         </ProtectedRoute>
                     }
-                >
-                    {/* Rute în cadrul layout-ului */}
-                    <Route index element={<Home />} /> {/* Ruta principală */}
+                > 
+                    <Route index element={<Home />} />
                     <Route path="employees" element={<EmployeeList />} />
                     <Route path="add-employee" element={<AddEmployeeForm />} />
                     <Route path="find-employee" element={<FindEmployee />} />
@@ -75,7 +74,10 @@ const App = () => {
                     <Route path="/leave-details/:angajatId" element={<LeaveDetails />} />
                     <Route path="/edit-leave/:angajatId/:requestId" element={<EditLeaveRequest />} />
                     <Route path="/leave-overview" element={<LeaveOverview />} />
-                    <Route path="/evaluation-overview" element={<EvaluationOverview />} />
+                    <Route path="/evaluation-overview" element={<EvaluationOverview />} />                  
+                    <Route path="documents" element={<DocumentList />} />
+                    <Route path="add-document" element={<DocumentForm />} />
+                    <Route path="document-details/:id" element={<DocumentDetails />} />
                 </Route>
             </Routes>
         </Router>
